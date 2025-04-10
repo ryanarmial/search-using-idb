@@ -1,11 +1,15 @@
-import { getAutocompleteFromDB, getAutocompleteJSON } from "../services/autocomplete"
+import { getAutocompleteFromDB, getAutocompleteJSON, saveAutocompleteToDB, VERSION_AUTOCOMPLETE } from "../services/autocomplete"
 
 export const getAutocompleteController = async () => {
   const autoCompleteDB = await getAutocompleteFromDB()
 
-  if(!autoCompleteDB){
-    const autoCompleteJSON = getAutocompleteJSON()
+  if(!autoCompleteDB || autoCompleteDB.version !== VERSION_AUTOCOMPLETE) {
+    const autoCompleteJSON = await getAutocompleteJSON()
+    saveAutocompleteToDB({
+      version: VERSION_AUTOCOMPLETE,
+      data: autoCompleteJSON
+    })
     return autoCompleteJSON
   }
-
+  return autoCompleteDB.data
 }

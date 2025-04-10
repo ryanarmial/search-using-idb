@@ -14,6 +14,5 @@ export const getAutocompleteFromDB = async () =>{
 }
 
 export const saveAutocompleteToDB = async (data: any) =>{
-  const result = await set('autocomplete-airport', data, idb)
-  return result
+  return await set('autocomplete-airport', data, idb)
 }
