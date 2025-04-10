@@ -51,7 +51,7 @@ const SearchPage = () => {
     const startTime = performance.now();
     const input = event.target?.value
     if (fuse) {
-      const result = fuse.search(input)
+      const result = fuse.search(input,{limit: 10})
       const resultMap:AirportAutoComplete[] = result.map((item) => item.item)
 
       const searchResult = isSorting? resultMap.sort((a, b) => {
@@ -78,7 +78,7 @@ const SearchPage = () => {
       <input onChange={debounce(onChangeSearch, 500)} name='searching' placeholder='Masukan nama kota / bandara' style={{width: 500, padding: 10}}/>
       <label>
         <input type='checkbox' checked={isSorting} onChange={() => {setIsSorting(!isSorting)}}/>
-        is sorting
+        is sorting by score
       </label>
       {resutSearch.length > 0 && (<table style={{margin: '20px auto'}}>
         <thead>
@@ -90,6 +90,7 @@ const SearchPage = () => {
             <th>City Code</th>
             <th>City Name</th>
             <th>Country</th>
+            <th>Score</th>
           </tr>
         </thead>
         <tbody>
@@ -102,6 +103,7 @@ const SearchPage = () => {
               <th>{item?.cc}</th>
               <th>{item?.cn}</th>
               <th>{item?.con}</th>
+              <th>{item?.score || 0}</th>
             </tr>
           ))}
         </tbody>
