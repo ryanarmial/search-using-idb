@@ -1,18 +1,19 @@
 import { get, set } from 'idb-keyval'
 import idb from '../helper/idb'
 
-export const VERSION_AUTOCOMPLETE = 1
+export const VERSION_AUTOCOMPLETE = 2
+const DB_KEY = 'autocomplete-airport'
 
 export const getAutocompleteJSON = async () =>{
-  const response = await fetch('http://d1lpvo9f29agwh.cloudfront.net/airport.json')
+  const response = await fetch('http://d1lpvo9f29agwh.cloudfront.net/airport_full.json')
   const data = await response.json()
   return data
 }
 
 export const getAutocompleteFromDB = async () =>{
-  return await get('autocomplete-airport', idb)
+  return await get(DB_KEY, idb)
 }
 
 export const saveAutocompleteToDB = async (data: any) =>{
-  return await set('autocomplete-airport', data, idb)
+  return await set(DB_KEY, data, idb)
 }
