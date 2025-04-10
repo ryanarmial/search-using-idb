@@ -5,7 +5,7 @@ export const VERSION_AUTOCOMPLETE = 2
 const DB_KEY = 'autocomplete-airport'
 
 export const getAutocompleteJSON = async () =>{
-  const response = await fetch('http://d1lpvo9f29agwh.cloudfront.net/airport_full.json')
+  const response = await fetch('https://d1lpvo9f29agwh.cloudfront.net/airport_full.json')
   const data = await response.json()
   return data
 }
