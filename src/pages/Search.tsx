@@ -15,6 +15,7 @@ type AirportAutoComplete = {
 
 const SearchPage = () => {
   const [data, setData] = useState([]);
+  const [limit, setLimit] = useState(0);
   const [resutSearch, setResultSearch] = useState<AirportAutoComplete[]>([]);
   const [isSorting, setIsSorting] = useState(false);
   const [searchTime, setSearchTime] = useState(0);
@@ -49,18 +50,17 @@ const SearchPage = () => {
 
   const onChangeSearch = (event:React.ChangeEvent<HTMLInputElement>) => {
     const startTime = performance.now();
-    const input = event.target?.value
     if (fuse) {
-      const result = fuse.search(input,{limit: 10})
+      const result = fuse.search(event.target?.value, limit ? { limit: limit } : undefined)
       const resultMap:AirportAutoComplete[] = result.map((item) => item.item)
 
       const searchResult = isSorting? resultMap.sort((a, b) => {
         const aScore = typeof a.score === 'number' ? a.score : 0
         const bScore = typeof b.score === 'number' ? b.score : 0
-        if (aScore === bScore) {
-          return 0
-        }
+
+        if (aScore === bScore) return 0
         return aScore < bScore ? 1 : -1
+
       }) : resultMap
 
       setResultSearch(searchResult)
@@ -75,6 +75,7 @@ const SearchPage = () => {
     <div>
       <div>Search Time: {searchTime}ms</div>
       <h1>Mau liburan kemana bapak Ricko?</h1>
+      <input onChange={(e) => setLimit(Number(e?.target?.value || 0))} name='limit' placeholder='Limit yang dicari' style={{width: 100,padding: 10, marginRight: 10}}/>
       <input onChange={debounce(onChangeSearch, 500)} name='searching' placeholder='Masukan nama kota / bandara' style={{width: 500, padding: 10}}/>
       <label>
         <input type='checkbox' checked={isSorting} onChange={() => {setIsSorting(!isSorting)}}/>
