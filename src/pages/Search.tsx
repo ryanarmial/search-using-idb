@@ -51,7 +51,7 @@ const SearchPage = () => {
   const onChangeSearch = (event:React.ChangeEvent<HTMLInputElement>) => {
     const startTime = performance.now();
     if (fuse) {
-      const result = fuse.search(event.target?.value, limit ? { limit: limit } : undefined)
+      const result = fuse.search(event.target?.value)
       const resultMap:AirportAutoComplete[] = result.map((item) => item.item)
 
       const searchResult = isSorting? resultMap.sort((a, b) => {
@@ -63,7 +63,7 @@ const SearchPage = () => {
 
       }) : resultMap
 
-      setResultSearch(searchResult)
+      setResultSearch(limit > 0 ? searchResult.slice(0, limit) : searchResult)
 
       const endTime = performance.now();
       const time = endTime - startTime
